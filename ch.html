@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>غرفة الهروب — المحطات والتحديات</title>
+  <meta name="description" content="غرفة الهروب في أكاديمية القاسمي: محطات استكشافية وتحديات جماعية ممتعة." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="home/button.css" />
+  <style>
+    :root {
+      --primary: #e0452f;
+      --primary-light: #ff7a59;
+      --primary-dark: #b82a17;
+      --secondary: #e0306b;
+      --gold: #f39c12;
+      --gold-dark: #d68910;
+      --green: #27ae60;
+      --green-dark: #1e8449;
+      --bg-gradient: linear-gradient(135deg, #ffeedb 0%, #fcd6c7 50%, #fdbfa9 100%);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: rgba(255, 255, 255, 0.95);
+      --shadow-soft: 0 14px 38px rgba(180, 80, 50, 0.18);
+      --shadow-hover: 0 20px 48px rgba(180, 80, 50, 0.28);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      color: #38241d;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+    }
+
+    /* Ambient background shapes */
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+    .bg-shape-1 {
+      width: 450px;
+      height: 450px;
+      background: #ff7a59;
+      top: -100px;
+      right: -100px;
+    }
+    .bg-shape-2 {
+      width: 400px;
+      height: 400px;
+      background: #e0306b;
+      bottom: -80px;
+      left: -80px;
+    }
+
+    /* ===== Top Header Bar ===== */
+    .topbar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px clamp(16px, 4vw, 44px);
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(14px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 20px rgba(180, 70, 40, 0.08);
+    }
+
+    .topbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 68px;
+      height: 68px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #fff;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 18px rgba(160, 80, 50, 0.2);
+    }
+
+    .group-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .group-title {
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .group-members {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #6d4b40;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: clamp(200px, 45vw, 600px);
+    }
+
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 2px solid rgba(224, 69, 47, 0.25);
+      padding: 6px 16px;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(190, 80, 50, 0.12);
+      font-weight: 700;
+      font-size: 14px;
+      color: #b7321e;
+      flex-shrink: 0;
+    }
+
+    .timer-badge__icon {
+      font-size: 17px;
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+
+    /* ===== Main Container ===== */
+    main {
+      position: relative;
+      z-index: 2;
+      width: min(100% - 32px, 940px);
+      margin: 28px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ===== Stepper Navigation (1 to 8) ===== */
+    .stepper-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 22px clamp(14px, 3vw, 28px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stepper-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .stepper-header__title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #8c3222;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stepper-header__count {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+      padding: 4px 14px;
+      border-radius: 999px;
+      box-shadow: 0 4px 10px rgba(224, 48, 107, 0.25);
+    }
+
+    .stepper-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 8px 4px 14px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(224, 69, 47, 0.3) transparent;
+    }
+
+    /* Continuous track line behind steps */
+    .stepper-track {
+      position: absolute;
+      top: 32px;
+      left: 28px;
+      right: 28px;
+      height: 6px;
+      background: rgba(224, 69, 47, 0.15);
+      border-radius: 999px;
+      z-index: 1;
+    }
+
+    .stepper-track__fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #27ae60, #ff7a59);
+      border-radius: inherit;
+      transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      outline: none;
+      min-width: 58px;
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+    }
+
+    .step-item:hover:not(.is-locked) {
+      transform: translateY(-2px);
+    }
+
+    .step-bubble {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      font-weight: 800;
+      border: 3px solid #fff;
+      background: #e2d7d2;
+      color: #7b635a;
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .step-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #6a4f44;
+      text-align: center;
+      white-space: nowrap;
+      transition: color 0.3s ease;
+    }
+
+    /* Step states */
+    .step-item.is-done .step-bubble {
+      background: linear-gradient(135deg, #2ecc71, #1e8449);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(39, 174, 96, 0.35);
+    }
+    .step-item.is-done .step-label {
+      color: #1e8449;
+    }
+
+    .step-item.is-active .step-bubble {
+      background: linear-gradient(135deg, #ff7a59, #e0306b);
+      color: #fff;
+      transform: scale(1.15);
+      border-color: #fff;
+      box-shadow: 0 0 0 4px rgba(255, 122, 89, 0.3), 0 8px 22px rgba(224, 69, 47, 0.4);
+      animation: pulse-ring 2s infinite ease-in-out;
+    }
+    .step-item.is-active .step-label {
+      color: #b7321e;
+      font-weight: 800;
+    }
+
+    .step-item.is-locked {
+      cursor: not-allowed;
+      opacity: 0.72;
+    }
+    .step-item.is-locked .step-bubble {
+      background: #e5dedb;
+      color: #9c8a82;
+      border-color: #f7f1ee;
+    }
+    .step-item.is-locked .step-label {
+      color: #9c8a82;
+    }
+
+    .step-item.is-selected:not(.is-active) .step-bubble {
+      outline: 3px solid #ff7a59;
+      outline-offset: 2px;
+    }
+
+    /* ===== Main Station Showcase Box (تحت الشريط) ===== */
+    .station-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* Station Image Box */
+    .station-image-wrapper {
+      position: relative;
+      width: 100%;
+      height: clamp(230px, 34vw, 380px);
+      overflow: hidden;
+      background: #f1e4de;
+    }
+
+    .station-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .station-panel:hover .station-img {
+      transform: scale(1.02);
+    }
+
+    /* Gradient overlay for contrast */
+    .station-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 40%, rgba(0,0,0,0.72) 100%);
+      pointer-events: none;
+    }
+
+    /* Floating badges on top of image */
+    .badge-top-left {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      color: #b7321e;
+      font-weight: 800;
+      font-size: clamp(13px, 1.8vw, 15px);
+      padding: 6px 16px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+      border: 1.5px solid #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 3;
+    }
+
+    .badge-top-right {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(30, 15, 10, 0.82);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-weight: 700;
+      font-size: clamp(13px, 1.8vw, 15px);
+      padding: 6px 16px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 3;
+    }
+
+    /* Station name banner at bottom of image */
+    .station-name-banner {
+      position: absolute;
+      bottom: 18px;
+      right: 22px;
+      left: 22px;
+      color: #fff;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+
+    .station-name-banner__tag {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffb8a3;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .station-name-banner__title {
+      font-size: clamp(22px, 3.4vw, 32px);
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    /* ===== Challenge Card Content (تحت الصورة) ===== */
+    .challenge-card {
+      padding: 28px clamp(18px, 4vw, 36px);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .challenge-meta-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 14px;
+      border-bottom: 2px dashed rgba(224, 69, 47, 0.2);
+    }
+
+    .challenge-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(224, 69, 47, 0.1);
+      color: var(--primary);
+      font-size: 15px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 999px;
+    }
+
+    .station-status-pill {
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+    .station-status-pill.is-active {
+      background: #fff0eb;
+      color: #d33c24;
+      border: 1px solid rgba(224, 69, 47, 0.3);
+    }
+    .station-status-pill.is-done {
+      background: #e8f8f0;
+      color: #1e8449;
+      border: 1px solid rgba(39, 174, 96, 0.3);
+    }
+
+    /* Task Box */
+    .task-box {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      border-right: 5px solid var(--primary);
+      box-shadow: 0 6px 20px rgba(180, 80, 50, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task-box__title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #9e2a18;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .task-box__text {
+      font-size: clamp(16px, 2.2vw, 18.5px);
+      font-weight: 600;
+      line-height: 1.85;
+      color: #4a3027;
+    }
+
+    /* ===== Form Inputs Area ===== */
+    .inputs-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .inputs-section__title {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: #7b4233;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-field label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #553428;
+    }
+
+    .input-box {
+      width: 100%;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      border: 2px solid #e2d2ca;
+      background: #fff;
+      padding: 0 16px;
+      font-family: inherit;
+      font-size: 15.5px;
+      color: #38241d;
+      outline: none;
+      transition: all 0.25s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .input-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(224, 69, 47, 0.18);
+    }
+
+    .input-box.textarea {
+      height: 90px;
+      padding: 12px 16px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .input-box[readonly] {
+      background: #fcf9f7;
+      color: #27ae60;
+      font-weight: 700;
+      border-color: #c9e8d4;
+    }
+
+    /* Custom Checkbox */
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #fff;
+      border: 2px solid #ecdcd4;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(180, 80, 50, 0.06);
+    }
+
+    .checkbox-container:hover {
+      border-color: var(--primary-light);
+      background: #fffbfa;
+      transform: translateY(-1px);
+    }
+
+    .checkbox-container.is-checked {
+      border-color: #27ae60;
+      background: #f0fbf4;
+      box-shadow: 0 6px 18px rgba(39, 174, 96, 0.14);
+    }
+
+    .custom-check {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      border: 2px solid #d4b8ac;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 16px;
+      color: #fff;
+      transition: all 0.25s ease;
+    }
+
+    .checkbox-container.is-checked .custom-check {
+      background: #27ae60;
+      border-color: #27ae60;
+    }
+
+    .checkbox-text {
+      font-size: clamp(15px, 2vw, 17px);
+      font-weight: 700;
+      color: #40281f;
+      line-height: 1.5;
+    }
+
+    .checkbox-container.is-checked .checkbox-text {
+      color: #1e8449;
+    }
+
+    /* Actions Footer */
+    .actions-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding-top: 10px;
+    }
+
+    .feedback-msg {
+      min-height: 24px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #c0392b;
+      text-align: center;
+    }
+
+    .action-btn {
+      width: 100%;
+      max-width: 440px;
+      padding: 15px 36px;
+      font-size: 18.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .view-active-btn {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      box-shadow: 0 10px 25px rgba(52, 152, 219, 0.35);
+    }
+
+    /* ===== Finished Celebration Screen (رسالة التهنئة والمركز) ===== */
+    .finish-screen {
+      display: none;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 3px solid #fff;
+      border-radius: var(--radius-lg);
+      padding: 38px clamp(18px, 4vw, 44px);
+      box-shadow: 0 20px 60px rgba(180, 70, 40, 0.3);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .finish-screen.show {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .trophy-badge {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f1c40f, #e67e22);
+      display: grid;
+      place-items: center;
+      font-size: 54px;
+      box-shadow: 0 12px 36px rgba(243, 156, 18, 0.45);
+      border: 4px solid #fff;
+      animation: bounce-trophy 2s infinite ease;
+    }
+
+    .finish-title {
+      font-size: clamp(26px, 4.2vw, 38px);
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.25;
+    }
+
+    .finish-subtext {
+      font-size: clamp(16px, 2.3vw, 20px);
+      font-weight: 600;
+      color: #6d4b40;
+      max-width: 680px;
+      line-height: 1.8;
+    }
+
+    /* Finish Rank Card (مركز المجموعة) */
+    .rank-card {
+      width: 100%;
+      max-width: 620px;
+      background: linear-gradient(135deg, #fff7eb, #ffeed6);
+      border: 2px solid #f9d8a7;
+      border-radius: 20px;
+      padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(230, 126, 34, 0.18);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rank-card__header {
+      font-size: 15px;
+      font-weight: 800;
+      color: #b7791f;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .rank-card__position {
+      font-size: clamp(28px, 4.5vw, 40px);
+      font-weight: 900;
+      color: #c0392b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .rank-card__time {
+      font-size: 16px;
+      font-weight: 700;
+      color: #7b4e18;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 6px 18px;
+      border-radius: 999px;
+      align-self: center;
+      border: 1px solid #f3d49f;
+    }
+
+    /* Certificate / Summary Card */
+    .certificate-card {
+      width: 100%;
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px clamp(16px, 3vw, 28px);
+      border: 2px solid #ecdcd4;
+      box-shadow: 0 8px 24px rgba(180, 80, 50, 0.08);
+      text-align: right;
+    }
+
+    .certificate-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px dashed #f0ded6;
+      padding-bottom: 10px;
+    }
+
+    .summary-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #fdfaf8;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border-right: 4px solid #27ae60;
+    }
+
+    .summary-item__station {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #7b4233;
+    }
+
+    .summary-item__val {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .finish-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(35, 20, 15, 0.94);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 99999;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Animations */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.18); }
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(255, 122, 89, 0.35), 0 8px 22px rgba(224, 69, 47, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(255, 122, 89, 0.15), 0 12px 28px rgba(224, 69, 47, 0.5); }
+    }
+
+    @keyframes bounce-trophy {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(4deg); }
+    }
+
+    @media (max-width: 700px) {
+      .topbar { padding: 12px 16px; }
+      .logo { width: 56px; height: 56px; }
+      .timer-badge { padding: 5px 12px; font-size: 13px; }
+      .stepper-panel { padding: 16px 10px; }
+      .step-bubble { width: 38px; height: 38px; font-size: 15px; }
+      .step-item { min-width: 50px; }
+      .step-label { font-size: 10.5px; }
+      .badge-top-left, .badge-top-right {
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+      .challenge-card { padding: 20px 16px; }
+      .finish-screen { padding: 26px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+
+  <!-- Confetti canvas for celebration -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Toast for feedback/lock alerts -->
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- Top Header Bar -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <img class="logo" src="images/logo.png" alt="شعار أكاديمية القاسمي" />
+      <div class="group-meta">
+        <h1 class="group-title" id="group-title">
+          <span>مجموعة:</span>
+          <span id="group-name-text">...</span>
+        </h1>
+        <p class="group-members" id="group-members"></p>
+      </div>
+    </div>
+    <div class="timer-badge" id="timer-badge" title="الوقت المنقضي">
+      <span class="timer-badge__icon">⏱️</span>
+      <span id="timer-display">00:00</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Stepper Navigation (1 to 8 with locks on upcoming stages) -->
+    <section class="stepper-panel" aria-label="شريط تنقل التحديات">
+      <div class="stepper-header">
+        <div class="stepper-header__title">
+          <span>خريطة المحطات المخصصة لمجموعتكم</span>
+          <span>🗺️</span>
+        </div>
+        <span class="stepper-header__count" id="stepper-progress-count">المحطة 1 من 8</span>
+      </div>
+
+      <div class="stepper-container" id="stepper-container">
+        <div class="stepper-track">
+          <div class="stepper-track__fill" id="stepper-fill"></div>
+        </div>
+        <!-- Steps rendered dynamically here -->
+      </div>
+    </section>
+
+    <!-- Main Station Showcase Card -->
+    <section class="station-panel" id="station-panel" aria-live="polite">
+      <!-- Image box with location badges -->
+      <div class="station-image-wrapper">
+        <img class="station-img" id="station-img" src="" alt="صورة المحطة" />
+        <div class="station-image-overlay"></div>
+        <div class="badge-top-left" id="station-badge-left">محطة 1 / 8</div>
+        <div class="badge-top-right" id="station-badge-right">مبنى رقم 5</div>
+        <div class="station-name-banner">
+          <span class="station-name-banner__tag">📍 محطة استكشافية</span>
+          <h2 class="station-name-banner__title" id="station-name-title">منطقة المختبرات</h2>
+        </div>
+      </div>
+
+      <!-- Challenge Card & Interactive inputs -->
+      <div class="challenge-card">
+        <div class="challenge-meta-header">
+          <div class="challenge-badge">
+            <span>🎯</span>
+            <span id="challenge-badge-text">المهمة المطلوبة من مجموعتكم</span>
+          </div>
+          <span class="station-status-pill" id="station-status-pill">المحطة الحالية</span>
+        </div>
+
+        <div class="task-box">
+          <div class="task-box__title" id="task-box-subtitle">
+            <span>💬</span>
+            <span id="task-subtitle-text">تفاصيل التحدي:</span>
+          </div>
+          <p class="task-box__text" id="task-text"></p>
+        </div>
+
+        <!-- Dynamic Inputs Area -->
+        <div class="inputs-section" id="inputs-section"></div>
+
+        <!-- Action / Submit button -->
+        <div class="actions-footer">
+          <p class="feedback-msg" id="feedback-msg" role="alert"></p>
+          <button class="button action-btn" id="action-btn" type="button">
+            <span>تأكيد وإنجاز التحدي والانتقال للتالي</span>
+            <span>←</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Celebration & Rank Screen -->
+    <section class="finish-screen" id="finish-screen" aria-label="شاشة إتمام التحدي والمركز">
+      <div class="trophy-badge">🏆</div>
+      <h2 class="finish-title">🎉 مبارك الفوز والإنجاز الباهر!</h2>
+      <p class="finish-subtext" id="finish-subtext">
+        لقد أتممتم جميع محطات وتحديات غرفة الهروب في أكاديمية القاسمي بنجاح منقطع النظير، ووصلتم إلى المحطة الختامية المشتركة!
+      </p>
+
+      <!-- المركز / الترتيب الذي أنهت فيه المجموعة -->
+      <div class="rank-card">
+        <span class="rank-card__header">المركز والترتيب النهائي للمجموعة</span>
+        <div class="rank-card__position" id="rank-position">
+          <span>🥇</span>
+          <span>المركز الأول — وسام التميّز</span>
+        </div>
+        <div class="rank-card__time" id="rank-time-display">
+          ⏱️ الوقت الإجمالي المستغرق: 00 دقيقة و 00 ثانية
+        </div>
+      </div>
+
+      <!-- ملخص إجابات المجموعة وإنجازاتهم في المحطات -->
+      <div class="certificate-card">
+        <h3 class="certificate-title">
+          <span>📜</span>
+          <span>سجل إنجازات وتوثيق مغامرة المجموعة</span>
+        </h3>
+        <ul class="summary-list" id="summary-list"></ul>
+      </div>
+
+      <div class="finish-actions">
+        <a class="button action-btn" href="home.html" style="text-decoration:none;">
+          <span>👥 تسجيل مجموعة جديدة</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* ================= All Master Stations Library ================= */
+    const MASTER_STATIONS = [
+      {
+        masterId: 0,
+        title: 'منطقة المختبرات',
+        shortLabel: 'المختبرات',
+        topRightBadge: 'مبنى رقم 5 - منطقة مختبرات العلوم',
+        image: 'images/station1_lab.jpg',
+        subtitle: 'منطقة المختبرات • مبنى رقم 5',
+        taskText: 'اذهبوا إلى مبنى رقم 5 (منطقة مختبرات العلوم)، اجلسوا على المقعد وتحدثوا حول 3 معلومات لا تعرفونها عن بعضكم وسجلوها في الخانات أدناه.',
+        inputType: 'three_inputs',
+        inputLabels: [
+          'المعلومة الأولى التي عرفتموها عن بعضكم:',
+          'المعلومة الثانية التي عرفتموها عن بعضكم:',
+          'المعلومة الثالثة التي عرفتموها عن بعضكم:'
+        ]
+      },
+      {
+        masterId: 1,
+        title: 'غرفة الدكتورة إيناس',
+        shortLabel: 'د. إيناس',
+        topRightBadge: '📍 غرفة الدكتورة إيناس',
+        image: 'images/station2_inas.jpg',
+        subtitle: 'غرفة الدكتورة إيناس • رسالة التوقعات في الصندوق',
+        taskText: 'الذهاب إلى غرفة الدكتورة إيناس، هناك صندوق وورق، قوموا بكتابة رسالة من توقعاتكم منها خلال السنة الحالية وقوموا بوضعها في الصندوق.',
+        inputType: 'single_check',
+        checkText: 'كتبنا رسالة توقعاتنا للسنة الحالية ووضعناها في الصندوق داخل غرفة الدكتورة إيناس ✓'
+      },
+      {
+        masterId: 2,
+        title: 'مركز سويا',
+        shortLabel: 'مركز سويا',
+        topRightBadge: '📍 مركز سويا',
+        image: 'images/station3_sawya.jpg',
+        subtitle: 'مركز سويا • تصوير الشيء المميز',
+        taskText: 'اذهبوا إلى مركز سويا، وقوموا بتصوير أكثر شيء لفت نظركم وأحببتموه هناك.',
+        inputType: 'text_and_check',
+        textLabel: 'ما هو أكثر شيء لفت نظركم وأحببتموه في مركز سويا وقمتُم بتصويره؟',
+        textPlaceholder: 'اكتبوا هنا ما هو الشيء المميز الذي لفت نظركم وقمتُم بتصويره...',
+        checkText: 'التقطنا صورة لأكثر شيء لفت نظرنا وأحببناه في مركز سويا ✓'
+      },
+      {
+        masterId: 3,
+        title: 'ساحة الكلية — لافتة نوّرت القاسمي',
+        shortLabel: 'لافتة الكلية',
+        topRightBadge: 'ساحة الكلية الرئيسية • عند مبنى رقم 4',
+        image: 'images/pic.png',
+        subtitle: 'الساحة المركزية • لافتة "نوّرت القاسمي"',
+        taskText: 'اذهبوا إلى ساحة الكلية الرئيسية، قفوا عند لافتة "نوّرت القاسمي" والتقطوا الصورة الجماعية الرائعة لمجموعتكم!',
+        inputType: 'single_check',
+        checkText: 'وقفنا عند لافتة نورت القاسمي والتقطنا الصورة الجماعية .'
+      },
+      {
+        masterId: 4,
+        title: 'منطقة غرف المحاضرين — الطابق الأول',
+        shortLabel: 'قاعة المناسبات',
+        topRightBadge: '📍 الطابق الأول • بجانب قاعة المناسبات',
+        image: 'images/station5_hall.jpg',
+        subtitle: '💬 منطقة غرف المحاضرين — الطابق الأول',
+        taskText: 'تقدموا نحو قاعة المناسبات، هناك طاولة يمكنكم الحديث بجانبها، تحدثوا عن ماذا تفعلون في أوقات الفراغ وسجلوا خلاصة حديثكم.',
+        inputType: 'single_text',
+        textLabel: 'ماذا تفعلون في أوقات الفراغ؟ (خلاصة حديثكم بجانب الطاولة)',
+        textPlaceholder: 'اكتبوا هنا ملخص ما يدور بينكم حول أوقات الفراغ والهوايات...'
+      },
+      {
+        masterId: 5,
+        title: 'الكافيتيريا',
+        shortLabel: 'الكافيتيريا',
+        topRightBadge: '📍 الكافيتيريا • جلسة الأريكة',
+        image: 'images/station6_cafe.jpg',
+        subtitle: '☕ الكافيتيريا • جلسة الأريكة',
+        taskText: 'اذهبوا إلى الكافيتيريا واجلسوا على الأريكة، وتحدثوا بشكل سريع وعفوي عن موقف حصل معكم شعرتم فيه بالفخر.',
+        inputType: 'single_text',
+        textLabel: 'اذكروا باختصار أحد المواقف الملهمة التي شعرتم فيها بالفخر:',
+        textPlaceholder: 'اكتبوا ملخص الموقف الملهم الذي شعرتم فيه بالفخر والاعتزاز...'
+      },
+      {
+        masterId: 6,
+        title: 'بيت الطالب',
+        shortLabel: 'بيت الطالب',
+        topRightBadge: '📍 بيت الطالب',
+        image: 'images/station7_student.jpg',
+        subtitle: '🎲 بيت الطالب',
+        taskText: 'ما هي اللعبة الموجودة في بيت الطالب التي كنتم تلعبونها في صغركم؟ سجلوها هنا للمتابعة.',
+        inputType: 'single_text',
+        textLabel: 'اسم اللعبة الموجودة في بيت الطالب:',
+        textPlaceholder: 'اكتبوا اسم اللعبة هنا...'
+      },
+      {
+        // COMMON FINAL STATION: Always the last station for ALL groups!
+        masterId: 7,
+        title: 'ساحة القاسمي الرئيسية',
+        shortLabel: 'المحطة الأخيرة',
+        topRightBadge: 'مبنى رقم 4',
+        image: 'images/station_final.png', // loading/image copy 3.png
+        subtitle: '🏁 ساحة القاسمي الرئيسية — المحطة الختامية المشتركة',
+        taskText: 'اذهبوا إلى الساحة الرئيسية عند الطالب محمد اغبارية في مبنى رقم 4، لتأكيد وصول كامل المجموعة واحتساب مركزكم النهائي!',
+        inputType: 'single_check',
+        checkText: 'وصلنا إلى الساحة الرئيسية والتقينا بالطالب محمد اغبارية ✓'
+      }
+    ];
+
+    /* ================= Randomized Route for this Group ================= */
+    // Ensure every group has a unique randomized order of intermediate stations (0 to 6)
+    // while the final common station (7) is ALWAYS at the end!
+    let routeOrder = JSON.parse(localStorage.getItem('escapeStationOrder') || 'null');
+    if (!routeOrder || !Array.isArray(routeOrder) || routeOrder.length !== 8) {
+      const pool = [0, 1, 2, 3, 4, 5, 6];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      routeOrder = [...pool, 7];
+      localStorage.setItem('escapeStationOrder', JSON.stringify(routeOrder));
+    }
+
+    // Build the group's customized station sequence
+    const STATIONS = routeOrder.map((mId, stepIdx) => {
+      const base = MASTER_STATIONS[mId];
+      const isFinal = stepIdx === routeOrder.length - 1;
+      return {
+        ...base,
+        stepIndex: stepIdx,
+        topLeftBadge: isFinal ? `المحطة الختامية (8 / 8)` : `محطة ${stepIdx + 1} / 8`
+      };
+    });
+
+    /* ================= State Management ================= */
+    const group = JSON.parse(localStorage.getItem('escapeGroup') || 'null');
+    if (!group) {
+      window.location.replace('home.html');
+    }
+
+    if (group) {
+      document.getElementById('group-name-text').textContent = group.name;
+      document.getElementById('group-members').textContent =
+        group.students.map(s => `${s.name} (${s.major})`).join(' • ');
+    }
+
+    // Progress = number of completed stations (0 to 8)
+    let progress = Math.min(STATIONS.length, Math.max(0, Number(localStorage.getItem('escapeProgress')) || 0));
+    // Currently viewed station index (0 to 7)
+    let activeViewIndex = progress < STATIONS.length ? progress : STATIONS.length - 1;
+
+    // Saved answers object { stepIndex: data }
+    let savedAnswers = JSON.parse(localStorage.getItem('escapeAnswers') || '{}');
+
+    // Timer Logic
+    const startTime = group?.startTime || (Date.now() - (progress * 4 * 60 * 1000));
+    if (!group.startTime) {
+      group.startTime = startTime;
+      localStorage.setItem('escapeGroup', JSON.stringify(group));
+    }
+
+    let finishTime = Number(localStorage.getItem('escapeFinishTime')) || null;
+
+    function updateTimer() {
+      const now = finishTime || Date.now();
+      const elapsedSec = Math.max(0, Math.floor((now - startTime) / 1000));
+      const m = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+      const s = String(elapsedSec % 60).padStart(2, '0');
+      document.getElementById('timer-display').textContent = `${m}:${s}`;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    /* ================= Toast Notification ================= */
+    let toastTimeout;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    /* ================= Stepper Bar Rendering ================= */
+    function renderStepper() {
+      const container = document.getElementById('stepper-container');
+      const track = container.querySelector('.stepper-track');
+      container.innerHTML = '';
+      container.appendChild(track);
+
+      STATIONS.forEach((st, idx) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'step-item';
+        item.id = `step-btn-${idx}`;
+
+        const isDone = idx < progress;
+        const isCurrentActive = idx === progress;
+        const isLocked = idx > progress;
+
+        if (isDone) item.classList.add('is-done');
+        if (isCurrentActive) item.classList.add('is-active');
+        if (isLocked) item.classList.add('is-locked');
+        if (idx === activeViewIndex) item.classList.add('is-selected');
+
+        let bubbleContent = '';
+        if (isDone) {
+          bubbleContent = '✓';
+        } else if (isLocked) {
+          bubbleContent = '🔒';
+        } else if (idx === STATIONS.length - 1) {
+          bubbleContent = '🏁';
+        } else {
+          bubbleContent = String(idx + 1);
+        }
+
+        item.innerHTML = `
+          <div class="step-bubble">${bubbleContent}</div>
+          <span class="step-label">${st.shortLabel}</span>
+        `;
+
+        item.addEventListener('click', () => {
+          if (isLocked) {
+            showToast(`المحطة ${idx + 1} مقفلة 🔒! يجب إتمام المحطة الحالية أولاً.`);
+            return;
+          }
+          activeViewIndex = idx;
+          renderAll();
+        });
+
+        container.appendChild(item);
+      });
+
+      const pct = (progress / (STATIONS.length - 1)) * 100;
+      document.getElementById('stepper-fill').style.width = `${Math.min(100, Math.max(0, pct))}%`;
+      document.getElementById('stepper-progress-count').textContent =
+        progress >= STATIONS.length
+          ? 'تم إنجاز كافة المحطات! 🎉'
+          : `المحطة ${progress + 1} من ${STATIONS.length}`;
+    }
+
+    /* ================= Station Content Rendering ================= */
+    function renderStation() {
+      const station = STATIONS[activeViewIndex];
+      const isCompleted = activeViewIndex < progress;
+
+      // Update Image and Badges
+      const imgEl = document.getElementById('station-img');
+      imgEl.src = station.image;
+      imgEl.alt = station.title;
+
+      document.getElementById('station-badge-left').textContent = station.topLeftBadge;
+      document.getElementById('station-badge-right').textContent = station.topRightBadge;
+      document.getElementById('station-name-title').textContent = station.title;
+      document.getElementById('task-subtitle-text').textContent = station.subtitle;
+      document.getElementById('task-text').textContent = station.taskText;
+
+      // Status pill
+      const statusPill = document.getElementById('station-status-pill');
+      if (isCompleted) {
+        statusPill.textContent = '✓ محطة منجزة مسبقاً';
+        statusPill.className = 'station-status-pill is-done';
+      } else {
+        statusPill.textContent = 'المحطة الحالية (قيد الحل)';
+        statusPill.className = 'station-status-pill is-active';
+      }
+
+      // Render Dynamic Inputs
+      const inputsSection = document.getElementById('inputs-section');
+      inputsSection.innerHTML = '';
+      const feedback = document.getElementById('feedback-msg');
+      feedback.textContent = '';
+      feedback.className = 'feedback-msg';
+
+      const existingData = savedAnswers[activeViewIndex] || {};
+
+      if (station.inputType === 'three_inputs') {
+        const titleEl = document.createElement('div');
+        titleEl.className = 'inputs-section__title';
+        titleEl.innerHTML = '<span>✍️</span><span>سجلوا 3 معلومات جديدة عرفتموها عن بعضكم:</span>';
+        inputsSection.appendChild(titleEl);
+
+        station.inputLabels.forEach((label, i) => {
+          const field = document.createElement('div');
+          field.className = 'input-field';
+          const val = existingData.info ? existingData.info[i] || '' : '';
+          field.innerHTML = `
+            <label for="station-info-${i}">${label}</label>
+            <input class="input-box" id="station-info-${i}" type="text"
+                   placeholder="اكتب المعلومة هنا..." value="${val}"
+                   ${isCompleted ? 'readonly' : 'required'} />
+          `;
+          inputsSection.appendChild(field);
+        });
+      } else if (station.inputType === 'single_check') {
+        const checkEl = document.createElement('div');
+        const checked = existingData.checked || isCompleted;
+        checkEl.className = `checkbox-container ${checked ? 'is-checked' : ''}`;
+        checkEl.id = 'station-checkbox-container';
+        checkEl.innerHTML = `
+          <div class="custom-check">${checked ? '✓' : ''}</div>
+          <span class="checkbox-text">${station.checkText}</span>
+        `;
+        if (!isCompleted) {
+          checkEl.addEventListener('click', () => {
+            const isNowChecked = !checkEl.classList.contains('is-checked');
+            checkEl.classList.toggle('is-checked', isNowChecked);
+            checkEl.querySelector('.custom-check').textContent = isNowChecked ? '✓' : '';
+          });
+        }
+        inputsSection.appendChild(checkEl);
+      } else if (station.inputType === 'text_and_check') {
+        const field = document.createElement('div');
+        field.className = 'input-field';
+        const textVal = existingData.text || '';
+        field.innerHTML = `
+          <label for="station-sawya-text">${station.textLabel}</label>
+          <textarea class="input-box textarea" id="station-sawya-text"
+                    placeholder="${station.textPlaceholder}"
+                    ${isCompleted ? 'readonly' : 'required'}>${textVal}</textarea>
+        `;
+        inputsSection.appendChild(field);
+
+        const checkEl = document.createElement('div');
+        const checked = existingData.checked || isCompleted;
+        checkEl.className = `checkbox-container ${checked ? 'is-checked' : ''}`;
+        checkEl.id = 'station-checkbox-container';
+        checkEl.innerHTML = `
+          <div class="custom-check">${checked ? '✓' : ''}</div>
+          <span class="checkbox-text">${station.checkText}</span>
+        `;
+        if (!isCompleted) {
+          checkEl.addEventListener('click', () => {
+            const isNowChecked = !checkEl.classList.contains('is-checked');
+            checkEl.classList.toggle('is-checked', isNowChecked);
+            checkEl.querySelector('.custom-check').textContent = isNowChecked ? '✓' : '';
+          });
+        }
+        inputsSection.appendChild(checkEl);
+      } else if (station.inputType === 'single_text') {
+        const field = document.createElement('div');
+        field.className = 'input-field';
+        const textVal = existingData.text || '';
+        field.innerHTML = `
+          <label for="station-single-text">${station.textLabel}</label>
+          <textarea class="input-box textarea" id="station-single-text"
+                    placeholder="${station.textPlaceholder}"
+                    ${isCompleted ? 'readonly' : 'required'}>${textVal}</textarea>
+        `;
+        inputsSection.appendChild(field);
+      }
+
+      // Action Button Configuration
+      const actionBtn = document.getElementById('action-btn');
+      if (isCompleted) {
+        actionBtn.innerHTML = `
+          <span>العودة للمحطة الحالية (${progress + 1})</span>
+          <span>↺</span>
+        `;
+        actionBtn.className = 'button action-btn view-active-btn';
+        actionBtn.onclick = () => {
+          activeViewIndex = progress;
+          renderAll();
+        };
+      } else {
+        const isFinal = activeViewIndex === STATIONS.length - 1;
+        actionBtn.innerHTML = isFinal
+          ? `<span>إنهاء التحدي الأخير وتأكيد الخروج من غرفة الهروب 🎉</span>`
+          : `<span>تأكيد وإنجاز المحطة والانتقال للتالي</span><span>←</span>`;
+        actionBtn.className = 'button action-btn';
+        actionBtn.onclick = handleStationSubmit;
+      }
+    }
+
+    /* ================= Submit & Validation Handler ================= */
+    function handleStationSubmit() {
+      const station = STATIONS[activeViewIndex];
+      const feedback = document.getElementById('feedback-msg');
+      feedback.textContent = '';
+      feedback.className = 'feedback-msg';
+
+      let answersToSave = {};
+
+      if (station.inputType === 'three_inputs') {
+        const inputs = [
+          document.getElementById('station-info-0'),
+          document.getElementById('station-info-1'),
+          document.getElementById('station-info-2')
+        ];
+        const values = inputs.map(inp => inp ? inp.value.trim() : '');
+        if (values.some(v => !v)) {
+          feedback.textContent = 'الرجاء كتابة جميع المعلومات الثلاث في الخانات أعلاه للمتابعة!';
+          const emptyIdx = values.findIndex(v => !v);
+          if (inputs[emptyIdx]) inputs[emptyIdx].focus();
+          return;
+        }
+        answersToSave.info = values;
+      } else if (station.inputType === 'single_check') {
+        const checkEl = document.getElementById('station-checkbox-container');
+        const isChecked = checkEl && checkEl.classList.contains('is-checked');
+        if (!isChecked) {
+          feedback.textContent = 'الرجاء الضغط على المربع وتأكيد إتمام المهمة المطلوبة!';
+          return;
+        }
+        answersToSave.checked = true;
+      } else if (station.inputType === 'text_and_check') {
+        const textInp = document.getElementById('station-sawya-text');
+        const textVal = textInp ? textInp.value.trim() : '';
+        const checkEl = document.getElementById('station-checkbox-container');
+        const isChecked = checkEl && checkEl.classList.contains('is-checked');
+
+        if (!textVal) {
+          feedback.textContent = 'الرجاء كتابة ما هو أكثر شيء لفت نظركم وأحببتموه في مركز سويا!';
+          if (textInp) textInp.focus();
+          return;
+        }
+        if (!isChecked) {
+          feedback.textContent = 'الرجاء الضغط على مربع التحقق لتأكيد التقاط الصورة!';
+          return;
+        }
+        answersToSave.text = textVal;
+        answersToSave.checked = true;
+      } else if (station.inputType === 'single_text') {
+        const textInp = document.getElementById('station-single-text');
+        const textVal = textInp ? textInp.value.trim() : '';
+        if (!textVal) {
+          feedback.textContent = 'الرجاء إدخال الإجابة المطلوبة في الخانة أعلاه!';
+          if (textInp) textInp.focus();
+          return;
+        }
+        answersToSave.text = textVal;
+      }
+
+      savedAnswers[activeViewIndex] = answersToSave;
+      localStorage.setItem('escapeAnswers', JSON.stringify(savedAnswers));
+
+      progress = activeViewIndex + 1;
+      localStorage.setItem('escapeProgress', String(progress));
+
+      if (progress < STATIONS.length) {
+        activeViewIndex = progress;
+        showToast(`أحسنتم! تم إنجاز ${station.title} بنجاح ✨`);
+        renderAll();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        if (!finishTime) {
+          finishTime = Date.now();
+          localStorage.setItem('escapeFinishTime', String(finishTime));
+        }
+        showToast('🎉 ألف مبروك! لقد هربتم من الغرفة بنجاح تام!');
+        renderAll();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        launchConfetti();
+      }
+    }
+
+    /* ================= Finish & Rank Calculation ================= */
+    function renderFinishScreen() {
+      const finishScreen = document.getElementById('finish-screen');
+      const stationPanel = document.getElementById('station-panel');
+      const isFinished = progress >= STATIONS.length;
+
+      if (!isFinished) {
+        finishScreen.classList.remove('show');
+        stationPanel.style.display = 'block';
+        return;
+      }
+
+      finishScreen.classList.add('show');
+      stationPanel.style.display = 'none';
+
+      const endTime = finishTime || Date.now();
+      const totalSeconds = Math.max(1, Math.floor((endTime - startTime) / 1000));
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+
+      let rankText = 'المركز الأول 🥇 — الفئة الذهبية المتألقة';
+      let rankBadge = '🥇';
+      if (mins < 35) {
+        rankText = 'المركز الأول 🥇 — وسام السرعة الذهبي والتميّز';
+      } else if (mins < 55) {
+        rankText = 'المركز الأول (مكرر) 🥈 — وسام التعاون الأكاديمي';
+      } else {
+        rankText = 'المركز المشرّف 🏆 — وسام الإصرار والإنجاز الأكاديمي';
+      }
+
+      document.getElementById('rank-position').innerHTML = `
+        <span>${rankBadge}</span>
+        <span>${rankText}</span>
+      `;
+
+      document.getElementById('rank-time-display').textContent =
+        `⏱️ الوقت الإجمالي المستغرق: ${mins} دقيقة و ${secs} ثانية`;
+
+      // Build Summary of Team's answers
+      const summaryList = document.getElementById('summary-list');
+      summaryList.innerHTML = '';
+
+      STATIONS.forEach((st, idx) => {
+        const ans = savedAnswers[idx];
+        const li = document.createElement('li');
+        li.className = 'summary-item';
+
+        let detailText = '';
+        if (ans) {
+          if (ans.info) {
+            detailText = `المعلومات المكتشفة: 1) ${ans.info[0]} | 2) ${ans.info[1]} | 3) ${ans.info[2]}`;
+          } else if (ans.text && ans.checked) {
+            detailText = `أكثر شيء لفت النظر: "${ans.text}" (تم التقاط الصورة بنجاح ✓)`;
+          } else if (ans.text) {
+            detailText = `الإجابة المسجلة: "${ans.text}"`;
+          } else if (ans.checked) {
+            detailText = `تم إتمام المهمة بنجاح ✓`;
+          }
+        } else {
+          detailText = 'تم إنجاز المهمة بنجاح ✓';
+        }
+
+        li.innerHTML = `
+          <span class="summary-item__station">المحطة ${idx + 1}: ${st.title}</span>
+          <span class="summary-item__val">${detailText}</span>
+        `;
+        summaryList.appendChild(li);
+      });
+    }
+
+    /* ================= Master Render Function ================= */
+    function renderAll() {
+      renderStepper();
+      renderStation();
+      renderFinishScreen();
+    }
+
+    /* ================= Festive Confetti Particle Cannon ================= */
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#e0452f', '#ff7a59', '#e0306b', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6'];
+
+      for (let i = 0; i < 180; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height * 0.45,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.8) * 18,
+          size: Math.random() * 9 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vrot: (Math.random() - 0.5) * 12,
+          opacity: 1
+        });
+      }
+
+      let frameCount = 0;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          p.rotation += p.vrot;
+          p.opacity -= 0.0035;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          ctx.restore();
+        });
+
+        frameCount++;
+        if (frameCount < 320) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    // Initialize View
+    renderAll();
+    if (progress >= STATIONS.length) {
+      launchConfetti();
+    }
+  </script>
+</body>
+</html>

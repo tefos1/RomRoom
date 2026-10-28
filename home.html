@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>غرفة الهروب — تسجيل المجموعة</title>
+  <meta name="description" content="غرفة الهروب: سجّلوا اسم المجموعة وأسماء الطلاب وتخصصاتهم وابدأوا المغامرة." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="home/card.css" />
+  <link rel="stylesheet" href="home/input.css" />
+  <link rel="stylesheet" href="home/button.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Cairo', system-ui, sans-serif;
+      color: #3a2a24;
+      background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+      background-attachment: fixed;
+    }
+
+    /* ===== Header ===== */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px clamp(16px, 4vw, 48px);
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+      animation: drop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 78px;
+      height: 78px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #fff;
+      border: 3px solid #fff;
+      box-shadow: 0 8px 24px rgba(160, 80, 50, 0.22);
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.04);
+    }
+
+    .brand__info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand__college {
+      font-size: 14px;
+      font-weight: 700;
+      color: #9a4e3b;
+      letter-spacing: 0.5px;
+    }
+
+    .brand__title {
+      font-size: clamp(20px, 3.2vw, 26px);
+      font-weight: 800;
+      color: #e0452f;
+      line-height: 1.2;
+    }
+
+    .badge-pill {
+      background: linear-gradient(135deg, #ff7a59, #e0306b);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(224, 48, 107, 0.3);
+      white-space: nowrap;
+    }
+
+    main {
+      width: min(100% - 32px, 980px);
+      margin: 20px auto 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+    }
+
+    /* ===== Hero Image Showcase (Prominent & Clear) ===== */
+    .hero-showcase {
+      width: 100%;
+      animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+    }
+
+    .hero-image-wrapper {
+      position: relative;
+      width: 100%;
+      height: clamp(250px, 38vw, 420px);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 4px solid #ffffff;
+      box-shadow: 0 16px 44px rgba(180, 80, 50, 0.28);
+      background: #fdf5f2;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .hero-image-wrapper:hover .hero-img {
+      transform: scale(1.025);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05) 40%, rgba(30, 15, 10, 0.78) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px clamp(16px, 3.5vw, 32px);
+      pointer-events: none;
+    }
+
+    .hero-caption {
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.92);
+      color: #b7321e;
+      font-weight: 800;
+      font-size: clamp(13px, 1.8vw, 15px);
+      padding: 5px 14px;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    }
+
+    .hero-subtext {
+      font-size: clamp(14px, 2vw, 17px);
+      font-weight: 600;
+      color: #fcece7;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      line-height: 1.6;
+    }
+
+    /* ===== Welcome Box ===== */
+    .welcome-box {
+      position: relative;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(14px);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 24px clamp(20px, 4vw, 36px);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(190, 120, 90, 0.16);
+      animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+    }
+
+    .welcome-box h2 {
+      font-size: clamp(22px, 3.4vw, 30px);
+      font-weight: 800;
+      color: #e0452f;
+      margin-bottom: 8px;
+    }
+
+    .welcome-box p {
+      font-size: clamp(15px, 2vw, 18px);
+      font-weight: 600;
+      color: #5a3c30;
+      line-height: 1.8;
+    }
+
+    /* ===== Form ===== */
+    .form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+      animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+    }
+
+    .panel {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      padding: 24px clamp(16px, 3vw, 32px);
+      box-shadow: 0 10px 30px rgba(190, 120, 90, 0.18);
+    }
+
+    .panel__title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #c2412b;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 22px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .input {
+      max-width: none;
+      font-family: inherit;
+      padding-left: 15px;
+      padding-right: 15px;
+      background: #fff;
+    }
+
+    select.input { cursor: pointer; }
+
+    /* Neutral until the user interacts, then input.css valid/invalid colors apply */
+    .input:not(.touched) {
+      border-color: #ccc;
+      color: #3a2a24;
+      box-shadow: none;
+    }
+
+    .students {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .student {
+      display: grid;
+      grid-template-columns: 40px 1fr 1fr;
+      align-items: center;
+      gap: 14px;
+      animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .student__num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, #ff7a59, #e0306b);
+    }
+
+    .hint {
+      color: #8a6a5e;
+      font-size: 15px;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    .error {
+      min-height: 26px;
+      color: #d81e1e;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes drop {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .logo, .banner { height: 70px; }
+      .logo { width: 70px; }
+      .row { grid-template-columns: 1fr; }
+      .student { grid-template-columns: 34px 1fr; }
+      .student .field:last-child { grid-column: 2; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Logo and Title -->
+  <header class="topbar">
+    <div class="brand">
+      <img class="logo" src="images/logo.png" alt="شعار أكاديمية القاسمي" />
+      <div class="brand__info">
+        <span class="brand__college">أكاديمية القاسمي</span>
+        <h1 class="brand__title">غرفة الهروب الأكاديمية</h1>
+      </div>
+    </div>
+    <div class="badge-pill">المغامرة الاستكشافية 🧭</div>
+  </header>
+
+  <main>
+    <!-- Prominent Hero Showcase of the College Picture -->
+    <section class="hero-showcase" aria-label="صورة الحرم الأكاديمي">
+      <div class="hero-image-wrapper">
+        <img class="hero-img" src="images/pic1.png" alt="الحرم الأكاديمي - أكاديمية القاسمي" />
+        <div class="hero-overlay">
+          <div class="hero-caption">
+            <span class="hero-badge">🏛️ الحرم الأكاديمي — أكاديمية القاسمي</span>
+            <p class="hero-subtext">انطلقوا في جولة استكشافية ممتعة عبر أرجاء ومباني الكلية لاكتشاف أسرارها وحل ألغازها معاً!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="welcome-box" aria-labelledby="welcome-title">
+      <div class="welcome-box__glow"></div>
+      <div class="welcome-box__content">
+        <h2 id="welcome-title">مرحباً بكم في مغامرة غرفة الهروب</h2>
+        <p>انقسموا إلى مجموعات متناغمة، ثم سجّلوا اسم المجموعة وبيانات الطلاب وتخصصاتهم لبدء التحدي وتحديد مركزكم النهائي!</p>
+      </div>
+    </section>
+
+    <form class="form" id="group-form" novalidate>
+      <section class="panel">
+        <h2 class="panel__title">بيانات المجموعة</h2>
+        <div class="row">
+          <div class="field">
+            <label for="group-name">اسم المجموعة</label>
+            <input class="input" id="group-name" type="text" placeholder="اكتب اسم المجموعة" required />
+          </div>
+          <div class="field">
+            <label for="group-size">عدد طلاب المجموعة</label>
+            <select class="input" id="group-size" required>
+              <option value="" selected disabled>اختر العدد</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel__title">الطلاب</h2>
+        <div class="students" id="students">
+          <p class="hint">اختر عدد الطلاب لتظهر خانات الإدخال</p>
+        </div>
+      </section>
+
+      <p class="error" id="error" role="alert"></p>
+
+      <button class="button" id="start-btn" type="submit">ابدأ المغامرة</button>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('group-form');
+    const groupName = document.getElementById('group-name');
+    const groupSize = document.getElementById('group-size');
+    const studentsEl = document.getElementById('students');
+    const errorEl = document.getElementById('error');
+
+    // Mark a field as "touched" so input.css valid/invalid colors show
+    form.addEventListener('input', e => e.target.classList?.add('touched'));
+    form.addEventListener('change', e => e.target.classList?.add('touched'));
+
+    groupSize.addEventListener('change', () => {
+      const n = Number(groupSize.value);
+      // Keep anything already typed when the count changes
+      const old = [...studentsEl.querySelectorAll('.student')].map(s => ({
+        name: s.querySelector('[data-name]').value,
+        major: s.querySelector('[data-major]').value
+      }));
+
+      studentsEl.innerHTML = '';
+      for (let i = 0; i < n; i++) {
+        const row = document.createElement('div');
+        row.className = 'student';
+        row.style.animationDelay = `${i * 60}ms`;
+        row.innerHTML = `
+          <span class="student__num">${i + 1}</span>
+          <div class="field">
+            <label for="student-name-${i}">اسم الطالب</label>
+            <input class="input" id="student-name-${i}" data-name type="text" placeholder="الاسم" required />
+          </div>
+          <div class="field">
+            <label for="student-major-${i}">التخصص</label>
+            <input class="input" id="student-major-${i}" data-major type="text" placeholder="التخصص" required />
+          </div>`;
+        if (old[i]) {
+          row.querySelector('[data-name]').value = old[i].name;
+          row.querySelector('[data-major]').value = old[i].major;
+        }
+        studentsEl.appendChild(row);
+      }
+      errorEl.textContent = '';
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const fields = [...form.querySelectorAll('.input')];
+      fields.forEach(f => f.classList.add('touched'));
+
+      if (!groupSize.value) {
+        errorEl.textContent = 'الرجاء اختيار عدد طلاب المجموعة';
+        return;
+      }
+      const empty = fields.find(f => !f.value.trim());
+      if (empty) {
+        errorEl.textContent = 'الرجاء تعبئة جميع الحقول (اسم المجموعة، أسماء الطلاب وتخصصاتهم)';
+        empty.focus();
+        return;
+      }
+
+      const students = [...studentsEl.querySelectorAll('.student')].map(s => ({
+        name: s.querySelector('[data-name]').value.trim(),
+        major: s.querySelector('[data-major]').value.trim()
+      }));
+
+      // Generate randomized order for intermediate stations (0 to 6)
+      // to distribute the 70 students evenly across rooms and prevent congestion!
+      const intermediatePool = [0, 1, 2, 3, 4, 5, 6];
+      for (let i = intermediatePool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [intermediatePool[i], intermediatePool[j]] = [intermediatePool[j], intermediatePool[i]];
+      }
+      // Station 7 (index 7) is ALWAYS fixed as the common final station in the main square at building 4!
+      const randomizedRoute = [...intermediatePool, 7];
+
+      localStorage.setItem('escapeGroup', JSON.stringify({
+        name: groupName.value.trim(),
+        students,
+        startTime: Date.now()
+      }));
+      localStorage.setItem('escapeStationOrder', JSON.stringify(randomizedRoute));
+      localStorage.setItem('escapeProgress', '0'); // new group starts from challenge 1
+      localStorage.removeItem('escapeAnswers');
+      localStorage.removeItem('escapeFinishTime');
+      window.location.href = 'ch.html';
+    });
+  </script>
+</body>
+</html>

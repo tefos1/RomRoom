@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>غرفة الهروب — أكاديمية القاسمي</title>
+    <meta name="description" content="غرفة الهروب — استعدوا للمغامرة والتحدي في أكاديمية القاسمي." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg: #09080d;
+            --bg-card: rgba(25, 20, 24, 0.85);
+            --gold: hsl(38, 92%, 62%);
+            --gold-deep: hsl(28, 85%, 48%);
+            --ember: hsl(14, 90%, 55%);
+            --text: hsl(40, 30%, 95%);
+            --muted: hsl(40, 15%, 65%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Cairo', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient Glow & Grid */
+        .bg-glow {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(60% 45% at 50% 50%, hsla(34, 90%, 50%, 0.18), transparent 70%),
+                radial-gradient(40% 30% at 50% 85%, hsla(14, 90%, 50%, 0.12), transparent 70%),
+                radial-gradient(120% 90% at 50% 50%, transparent 55%, #000 100%);
+            animation: breathe 5s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(hsla(38, 60%, 60%, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, hsla(38, 60%, 60%, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Container */
+        .loader {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px 40px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        body.is-leaving .loader {
+            opacity: 0;
+            transform: scale(1.05);
+            filter: blur(8px);
+        }
+
+        /* Header */
+        .loader__header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .college-tag {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 4px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .loader__title {
+            font-family: 'Cinzel', 'Cairo', serif;
+            font-weight: 800;
+            font-size: clamp(30px, 5.5vw, 54px);
+            letter-spacing: 0.15em;
+            background: linear-gradient(100deg, var(--gold-deep) 0%, var(--gold) 35%, #fff5d6 50%, var(--gold) 65%, var(--gold-deep) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShimmer 3.5s linear infinite;
+            filter: drop-shadow(0 0 25px hsla(38, 92%, 55%, 0.4));
+        }
+
+        .loader__subtitle {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        /* 3D Carousel Stage */
+        .stage-container {
+            position: relative;
+            width: min(100%, 750px);
+            height: 380px;
+            perspective: 1100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Floor reflection & light */
+        .carousel-floor {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 60px;
+            background: radial-gradient(ellipse at center, hsla(38, 92%, 55%, 0.35), transparent 70%);
+            filter: blur(18px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 3D Ring */
+        .carousel-ring {
+            position: relative;
+            width: 0;
+            height: 0;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        /* Cards in the ring */
+        .carousel-card {
+            position: absolute;
+            width: 190px;
+            height: 240px;
+            left: -95px;
+            top: -120px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2.5px solid rgba(243, 156, 18, 0.6);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 24px rgba(243, 156, 18, 0.25);
+            background: #110e14;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+            -webkit-box-reflect: below 8px linear-gradient(transparent 70%, rgba(255, 255, 255, 0.22));
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .carousel-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.7) 100%);
+            pointer-events: none;
+        }
+
+        /* Footer & Progress */
+        .loader__footer {
+            width: min(90vw, 360px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .dot.active {
+            width: 26px;
+            border-radius: 999px;
+            background: var(--gold);
+            box-shadow: 0 0 12px hsla(38, 92%, 60%, 0.8);
+        }
+
+        .progress-bar-wrap {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            position: relative;
+            overflow: visible;
+        }
+
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff7a59, var(--gold), #fff5d6);
+            border-radius: inherit;
+            box-shadow: 0 0 14px hsla(38, 92%, 60%, 0.9);
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 12px 3px hsla(38, 92%, 60%, 1);
+        }
+
+        .progress-text {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--gold);
+            min-width: 38px;
+            text-align: left;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Dust particles */
+        .dust-particle {
+            position: absolute;
+            bottom: -10px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 6px var(--gold);
+            opacity: 0;
+            pointer-events: none;
+            animation: riseUp linear infinite;
+        }
+
+        @keyframes riseUp {
+            0% { transform: translateY(0); opacity: 0; }
+            15% { opacity: 0.6; }
+            85% { opacity: 0.6; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div id="dust-container" aria-hidden="true"></div>
+
+    <main class="loader">
+        <header class="loader__header">
+            <span class="college-tag">أكاديمية القاسمي</span>
+            <h1 class="loader__title">غرفة الهروب</h1>
+            <p class="loader__subtitle">جاري تجهيز التحديات والمحطات الاستكشافية...</p>
+        </header>
+
+        <!-- 3D Circular Carousel (صور تلف بشكل دائري متحرك) -->
+        <section class="stage-container" id="stage" aria-label="معرض الصور الدائري">
+            <div class="carousel-floor"></div>
+            <div class="carousel-ring" id="ring">
+                <!-- 6 3D Cards placed in a circle -->
+            </div>
+        </section>
+
+        <footer class="loader__footer">
+            <div class="dots" id="dots" aria-hidden="true"></div>
+            <div class="progress-bar-wrap">
+                <span class="progress-text" id="progress-text">0%</span>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        (() => {
+            const NEXT_PAGE = 'home.html';
+            const TOTAL_DURATION = 5000; // 5 seconds loading
+            const FADE_TIME = 600;
+
+            // 6 Images for the circular carousel
+            const IMAGES = [
+                'loading/image/img1.png',
+                'loading/image/img2.png',
+                'loading/image/img3.png',
+                'loading/image/img4.png',
+                'loading/image/img5.png',
+                'loading/image/img6.png'
+            ];
+
+            const count = IMAGES.length;
+            const radius = 290; // distance from center in 3D pixels
+            const stepDeg = 360 / count;
+
+            const ring = document.getElementById('ring');
+            const dotsEl = document.getElementById('dots');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+
+            // Build the 3D Cards in a circular ring
+            const cards = [];
+            const dots = [];
+
+            IMAGES.forEach((src, i) => {
+                const angle = i * stepDeg;
+                const card = document.createElement('div');
+                card.className = 'carousel-card';
+                card.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `محطة ${i + 1}`;
+                card.appendChild(img);
+
+                const overlay = document.createElement('div');
+                overlay.className = 'card-overlay';
+                card.appendChild(overlay);
+
+                ring.appendChild(card);
+                cards.push(card);
+
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dotsEl.appendChild(dot);
+                dots.push(dot);
+            });
+
+            // Smooth Continuous Rotation State
+            let currentAngle = 0;
+            const rotationSpeed = 38; // degrees per second
+            let tiltX = -8;
+            let tiltY = 0;
+            let targetTiltY = 0;
+
+            // Parallax mouse interaction
+            window.addEventListener('pointermove', e => {
+                const xPct = (e.clientX / window.innerWidth) * 2 - 1;
+                targetTiltY = xPct * 8;
+            });
+
+            let lastTime = performance.now();
+            function animateLoop(now) {
+                const dt = Math.min((now - lastTime) / 1000, 0.05);
+                lastTime = now;
+
+                // Continuous Circular Rotation
+                currentAngle = (currentAngle + rotationSpeed * dt) % 360;
+
+                // Smooth Parallax Tilt
+                tiltY += (targetTiltY - tiltY) * 0.08;
+
+                ring.style.transform = `rotateX(${tiltX}deg) rotateY(${currentAngle + tiltY}deg)`;
+
+                // Highlight active facing dot
+                const activeIndex = (Math.round(-currentAngle / stepDeg) % count + count) % count;
+                dots.forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === activeIndex);
+                });
+
+                requestAnimationFrame(animateLoop);
+            }
+            requestAnimationFrame(animateLoop);
+
+            // Floating Dust Particles
+            const dustContainer = document.getElementById('dust-container');
+            for (let i = 0; i < 28; i++) {
+                const p = document.createElement('div');
+                p.className = 'dust-particle';
+                const s = 1.5 + Math.random() * 2.5;
+                p.style.width = `${s}px`;
+                p.style.height = `${s}px`;
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.animationDuration = `${7 + Math.random() * 8}s`;
+                p.style.animationDelay = `${-Math.random() * 10}s`;
+                dustContainer.appendChild(p);
+            }
+
+            // Progress Bar & Auto-redirect to home.html
+            const startLoadTime = performance.now();
+            function updateProgress(now) {
+                const elapsed = now - startLoadTime;
+                const progress = Math.min(1, elapsed / TOTAL_DURATION);
+                const pct = Math.round(progress * 100);
+
+                progressFill.style.width = `${pct}%`;
+                progressText.textContent = `${pct}%`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateProgress);
+                }
+            }
+            requestAnimationFrame(updateProgress);
+
+            setTimeout(() => {
+                document.body.classList.add('is-leaving');
+            }, TOTAL_DURATION - FADE_TIME);
+
+            setTimeout(() => {
+                window.location.replace(NEXT_PAGE);
+            }, TOTAL_DURATION);
+        })();
+    </script>
+</body>
+</html>
